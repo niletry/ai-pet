@@ -6,12 +6,11 @@ TBD - created by archiving change implement-sprite-animation. Update Purpose aft
 ### Requirement: Local Sprite Rendering
 The application SHALL render the pet using the local `owl-sprites.png` sprite sheet.
 
-#### Scenario: Display single frame with transparency
+#### Scenario: Clean Edges
 - **GIVEN** the sprite sheet is available locally
 - **WHEN** the application renders the pet
-- **THEN** only the pet pixels SHALL be visible
-- **AND** the background of the sprite square SHALL be fully transparent
-- **AND** NO checkerboard or solid color background SHALL be visible
+- **THEN** the transparency SHALL be clean with NO visible artifacts or noise
+- **AND** pixels that represent the background (gray/white compression artifacts) SHALL be fully removed
 
 ### Requirement: Dynamic Poses
 The pet SHALL change its visual appearance over time to simulate life.
