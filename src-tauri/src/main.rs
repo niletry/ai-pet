@@ -6,7 +6,7 @@ use tauri::Manager;
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
-            let window = app.get_window("main").unwrap();
+            let _window = app.get_webview_window("main").unwrap();
             // 在 Windows 上实现鼠标穿透透明区域（如果是特定平台需要特定处理）
             // 这里我们先保持简单，确保窗口能跑起来
             Ok(())
