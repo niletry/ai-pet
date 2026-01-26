@@ -1,0 +1,2 @@
+- [x] Update `tauri.conf.json` window width and height to 100 <!-- id: 0 -->
+- [x] Verify application starts with new dimensions <!-- id: 1 -->

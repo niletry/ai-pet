@@ -1,0 +1,2 @@
+- [x] Remove debug backgrounds from `index.html` <!-- id: 0 -->
+- [x] Verify UI looks clean and transparent again <!-- id: 1 -->

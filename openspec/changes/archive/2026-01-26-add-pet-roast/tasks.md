@@ -1,0 +1,4 @@
+- [x] Add speech bubble HTML and CSS to `index.html` and `styles.css` <!-- id: 0 -->
+- [x] Implement `showRoast()` function in `src/main.ts` with random messages <!-- id: 1 -->
+- [x] Wire up click/double-click event to trigger `showRoast()` <!-- id: 2 -->
+- [x] Verify message appears and disappears correctly <!-- id: 3 -->

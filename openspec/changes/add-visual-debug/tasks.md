@@ -1,0 +1,3 @@
+- [x] Add `height: 100vh` and debug background colors to `index.html` CSS <!-- id: 0 -->
+- [x] Verify pet is aligned to the bottom of the window <!-- id: 1 -->
+- [x] Verify speech bubble is fully visible with its debug background <!-- id: 2 -->

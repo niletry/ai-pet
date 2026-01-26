@@ -1,0 +1,2 @@
+- [x] Update `#pet-container` dimensions to 100px in `index.html` <!-- id: 0 -->
+- [x] Verify pet is fully visible and not clipped <!-- id: 1 -->

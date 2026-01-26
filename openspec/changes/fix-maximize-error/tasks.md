@@ -1,0 +1,3 @@
+- [x] Remove `data-tauri-drag-region` from `index.html` <!-- id: 0 -->
+- [x] Verify dragging still works (left click and drag) <!-- id: 1 -->
+- [x] Verify double-click shows roast without error <!-- id: 2 -->

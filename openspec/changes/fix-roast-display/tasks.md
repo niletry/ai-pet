@@ -1,0 +1,3 @@
+- [x] Update `tauri.conf.json` window size to 200x200 (to be safe for now) <!-- id: 0 -->
+- [x] Update `index.html` styling to align pet to bottom-center and fit bubble <!-- id: 1 -->
+- [x] Add `e.preventDefault()` to `dblclick` handler in `src/main.ts` <!-- id: 2 -->
