@@ -1,0 +1,2 @@
+- [x] Remove unused Square*Logo.png and StoreLogo.png files from `src-tauri/icons` <!-- id: 0 -->
+- [x] Verify application build to ensure no missing icon errors <!-- id: 1 -->
