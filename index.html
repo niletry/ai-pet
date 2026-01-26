@@ -14,41 +14,34 @@
       width: 200px;
       height: 200px;
       pointer-events: auto;
-      /* 允许点击宠物 */
       cursor: grab;
+      position: relative;
     }
   
-    img {
+    #pet-sprite {
       width: 100%;
-      height: auto;
-      /* 这里可以加入简单的浮动动画 */
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-size: 300% 300%; /* 3x3 grid */
+      image-rendering: pixelated; /* Crisp pixel art */
+      
+      /* Float animation */
       animation: float 3s ease-in-out infinite;
-      /* 禁用图片的默认拖拽行为 */
-      -webkit-user-drag: none;
-      user-drag: none;
-      -webkit-user-select: none;
-      user-select: none;
+      
+      /* Disable interactions */
       pointer-events: none;
     }
   
     @keyframes float {
-  
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-  
-      50% {
-        transform: translateY(-10px);
-      }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
   </style>
   </head>
 <body>
   <div id="pet-container" data-tauri-drag-region>
-    <img
-      src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueW9ueW9ueW9ueW9ueW9ueW9ueW9ueW9ueW9ueW9ueW9ueSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7TKMGpxN3O9D6M0w/giphy.gif"
-      alt="pet">
+    <div id="pet-sprite"></div>
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
