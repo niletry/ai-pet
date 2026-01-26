@@ -99,3 +99,19 @@ Window behavior is configured in `src-tauri/tauri.conf.json`:
 
 - [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 
+
+## Release Process
+
+This project uses **GitHub Actions** to automate cross-platform releases.
+
+To trigger a new release:
+1. Tag your commit with a version number starting with `v` (e.g., `v0.1.0`):
+   ```bash
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+2. Go to the **Actions** tab in your GitHub repository to watch the build progress.
+3. Once completed, a draft release will be created on the **Releases** page with the following assets:
+   - macOS: `.dmg`, `.app`
+   - Windows: `.msi`, `.exe`
+   - Linux: `.AppImage`, `.deb`
