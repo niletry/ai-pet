@@ -1,22 +1,21 @@
-import { invoke } from "@tauri-apps/api/core";
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
-let greetInputEl: HTMLInputElement | null;
-let greetMsgEl: HTMLElement | null;
+console.log('🐾 Desktop Pet initialized');
 
-async function greet() {
-  if (greetMsgEl && greetInputEl) {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsgEl.textContent = await invoke("greet", {
-      name: greetInputEl.value,
+// Initialize drag functionality when DOM is loaded
+window.addEventListener('DOMContentLoaded', () => {
+  const petContainer = document.querySelector('#pet-container');
+
+  if (petContainer) {
+    petContainer.addEventListener('mousedown', async (e) => {
+      e.preventDefault();
+
+      try {
+        const appWindow = getCurrentWindow();
+        await appWindow.startDragging();
+      } catch (error) {
+        console.error('Failed to start dragging:', error);
+      }
     });
   }
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
-  document.querySelector("#greet-form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    greet();
-  });
 });
