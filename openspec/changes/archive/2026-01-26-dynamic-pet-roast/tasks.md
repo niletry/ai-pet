@@ -1,0 +1,3 @@
+- [x] Update `showRoast()` in `src/main.ts` to fetch from `https://flipside-api.code123.in/pet/interact` <!-- id: 0 -->
+- [x] Implement error handling for the fetch request <!-- id: 1 -->
+- [x] Verify the speech bubble displays content from the API on interaction <!-- id: 2 -->

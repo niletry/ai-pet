@@ -48,19 +48,34 @@ const ROASTS = [
   "再点我就报错给你看！"
 ];
 
-function showRoast() {
+async function showRoast() {
   const bubble = document.getElementById('speech-bubble');
   if (!bubble) return;
 
-  // Pick random roast
-  const text = ROASTS[Math.floor(Math.random() * ROASTS.length)];
-  bubble.textContent = text;
-
-  // Show bubble
+  // Immediate feedback: Show thinking indicator
+  bubble.textContent = '...';
   bubble.classList.remove('hidden');
 
-  // Hide after 3 seconds
-  // Clear any existing timeout to avoid flickers if clicked rapidly
+  // Pick random roast as fallback
+  let text = ROASTS[Math.floor(Math.random() * ROASTS.length)];
+
+  try {
+    // Attempt to fetch dynamic roast
+    const response = await fetch('https://flipside-api.code123.in/pet/interact');
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success && data.message) {
+        text = data.message;
+      }
+    }
+  } catch (error) {
+    console.error('Failed to fetch dynamic roast:', error);
+  }
+
+  // Update with final text
+  bubble.textContent = text;
+
+  // Hide after 4 seconds (increased slightly for potentially longer dynamic messages)
   const existingTimeout = bubble.getAttribute('data-timeout');
   if (existingTimeout) {
     clearTimeout(parseInt(existingTimeout));
@@ -69,7 +84,7 @@ function showRoast() {
   const timeoutId = window.setTimeout(() => {
     bubble.classList.add('hidden');
     bubble.removeAttribute('data-timeout');
-  }, 3000);
+  }, 4000);
 
   bubble.setAttribute('data-timeout', timeoutId.toString());
 }
@@ -94,11 +109,10 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // 2. Setup Roast Interaction (Double Click to avoid drag conflict)
-    // Using dblclick is safer because mousedown is used for dragging
-    petContainer.addEventListener('dblclick', (e) => {
+    petContainer.addEventListener('dblclick', async (e) => {
       e.stopPropagation(); // Prevent bubbling
       e.preventDefault(); // Prevent accidental maximize behavior
-      showRoast();
+      await showRoast();
     });
   }
 

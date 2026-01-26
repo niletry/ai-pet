@@ -55,7 +55,11 @@
         font-family: 'Arial', sans-serif; /* Fallback for Chinese characters */
         font-size: 14px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        white-space: nowrap;
+        white-space: normal; /* Enable wrapping */
+        word-break: break-word;
+        width: max-content;
+        max-width: 160px; /* Leave room in 200px window */
+        text-align: center;
         z-index: 10;
         border: 1px solid #ccc;
     }

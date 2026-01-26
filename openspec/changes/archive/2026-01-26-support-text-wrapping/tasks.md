@@ -1,0 +1,2 @@
+- [x] Update `.speech-bubble` CSS in `index.html` to support wrapping <!-- id: 0 -->
+- [x] Verify long API messages wrap correctly and stay within the window <!-- id: 1 -->

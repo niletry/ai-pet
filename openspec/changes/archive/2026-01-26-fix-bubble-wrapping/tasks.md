@@ -1,0 +1,2 @@
+- [x] Add `width: max-content` to `.speech-bubble` in `index.html` <!-- id: 0 -->
+- [x] Verify both short texts (horizontal) and long texts (wrapped) display correctly <!-- id: 1 -->

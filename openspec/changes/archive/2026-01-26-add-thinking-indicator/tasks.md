@@ -1,0 +1,2 @@
+- [x] Update `showRoast()` in `src/main.ts` to display "..." before fetching <!-- id: 0 -->
+- [x] Verify the thinking indicator appears immediately on double-click <!-- id: 1 -->
