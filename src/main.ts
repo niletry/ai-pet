@@ -1,40 +1,72 @@
 import { getCurrentWindow } from '@tauri-apps/api/window';
-// @ts-ignore
-import owlSprites from './assets/owl-sprites.png';
+import { characters, CharacterConfig } from './characters';
+
+// Select which character to use here ('owl' or 'water')
+const currentCharacterId = 'water'; 
 
 console.log('🐾 Desktop Pet initialized');
 
-// Sprite Configuration
-const ANIMATION_INTERVAL = 3000; // 3 seconds
-const SPRITE_GRID = [
-  ['0% 0%', '50% 0%', '100% 0%'],
-  ['0% 50%', '50% 50%', '100% 50%'],
-  ['0% 100%', '50% 100%', '100% 100%']
-];
+let animationTimer: number | null = null;
+let currentFrameIndex = 0;
 
-function setSprite(sprite: HTMLElement, row: number, col: number) {
-  // Set background image if not set (using imported path)
-  if (!sprite.style.backgroundImage) {
-    sprite.style.backgroundImage = `url("${owlSprites}")`;
+function setSpriteFrame(sprite: HTMLElement, config: CharacterConfig, row: number, col: number) {
+  if (sprite.style.backgroundImage !== `url("${config.imagePath}")`) {
+    sprite.style.backgroundImage = `url("${config.imagePath}")`;
   }
-  sprite.style.backgroundPosition = SPRITE_GRID[row][col];
+  
+  // Set the size dynamically based on grid
+  sprite.style.backgroundSize = `${config.grid.cols * 100}% ${config.grid.rows * 100}%`;
+
+  // Calculate position: mapping column index to percentage and handling 1-column case
+  const posX = config.grid.cols > 1 ? (col / (config.grid.cols - 1)) * 100 : 0;
+  const posY = config.grid.rows > 1 ? (row / (config.grid.rows - 1)) * 100 : 0;
+
+  sprite.style.backgroundPosition = `${posX}% ${posY}%`;
+}
+
+function playAction(actionName: string) {
+  const sprite = document.getElementById('pet-sprite');
+  const config = characters[currentCharacterId];
+  if (!sprite || !config) return;
+
+  const action = config.actions[actionName];
+  if (!action) return;
+
+  if (animationTimer) {
+    clearInterval(animationTimer);
+  }
+
+  currentFrameIndex = 0;
+
+  // Render first frame immediately
+  if (action.frames.length > 0) {
+    const f = action.frames[currentFrameIndex];
+    setSpriteFrame(sprite, config, f.row, f.col);
+  }
+
+  const interval = action.interval || 3000;
+
+  // Behavior loop
+  animationTimer = window.setInterval(() => {
+    if (action.frames.length === 0) return;
+
+    if (action.name === 'random') {
+      const idx = Math.floor(Math.random() * action.frames.length);
+      const f = action.frames[idx];
+      setSpriteFrame(sprite, config, f.row, f.col);
+    } else {
+      currentFrameIndex = (currentFrameIndex + 1) % action.frames.length;
+      const f = action.frames[currentFrameIndex];
+      setSpriteFrame(sprite, config, f.row, f.col);
+    }
+  }, interval);
 }
 
 function startLifeCycle() {
-  const sprite = document.getElementById('pet-sprite');
-  if (!sprite) return;
-
-  // Initial pose
-  setSprite(sprite, 0, 0);
-
-  // Behavior loop
-  setInterval(() => {
-    // Random simple behavior: pick a random frame for now
-    // In a real app, this would be a state machine
-    const row = Math.floor(Math.random() * 3);
-    const col = Math.floor(Math.random() * 3);
-    setSprite(sprite, row, col);
-  }, ANIMATION_INTERVAL);
+  const config = characters[currentCharacterId];
+  if (config) {
+    playAction(config.defaultAction);
+  }
 }
 
 // Roast Configuration
