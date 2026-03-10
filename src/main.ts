@@ -1,4 +1,4 @@
-import { getCurrentWindow, currentMonitor, getAllWindows } from '@tauri-apps/api/window';
+import { getCurrentWindow, currentMonitor, getAllWindows, cursorPosition } from '@tauri-apps/api/window';
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { characters, CharacterConfig } from './characters';
 
@@ -124,6 +124,47 @@ async function showRoast() {
 
 // Initialize
 window.addEventListener('DOMContentLoaded', () => {
+  // 0. Setup click-through for transparent areas
+  const appWindow = getCurrentWindow();
+  
+  // Set up polling to check if the cursor is over any interactive element.
+  // This overcomes the issue where setIgnoreCursorEvents(true) stops mousemove events.
+  setInterval(async () => {
+    try {
+      const cursor = await cursorPosition(); // Physical pixels
+      const windowPos = await appWindow.outerPosition(); // Physical pixels
+      const factor = await appWindow.scaleFactor();
+
+      // Convert to logical pixels to match getBoundingClientRect
+      const logicalX = (cursor.x - windowPos.x) / factor;
+      const logicalY = (cursor.y - windowPos.y) / factor;
+
+      const radialMenu = document.getElementById('radial-menu');
+      const interactiveElements = document.querySelectorAll('#pet-container, .menu-item, #speech-bubble');
+      
+      let isOverInteractive = false;
+      for (const el of interactiveElements) {
+        // Only consider visible/active elements
+        if (el.id === 'speech-bubble' && el.classList.contains('hidden')) continue;
+        if (el.classList.contains('menu-item') && !radialMenu?.classList.contains('active')) continue;
+
+        const rect = el.getBoundingClientRect();
+        if (logicalX >= rect.left && logicalX <= rect.right && 
+            logicalY >= rect.top && logicalY <= rect.bottom) {
+          isOverInteractive = true;
+          break;
+        }
+      }
+      
+      // If we are over any interactive element, disable click-through
+      // Otherwise, enable click-through for the transparent background
+      await appWindow.setIgnoreCursorEvents(!isOverInteractive);
+    } catch (e) {
+      // Possible when window is dragging or closed
+    }
+  }, 120); // 120ms is a good balance for responsiveness vs CPU
+
+
   // 1. Setup Dragging
   const petContainer = document.querySelector('#pet-container');
   if (petContainer) {
