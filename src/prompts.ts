@@ -9,30 +9,37 @@ const PROMPTS = [
   { title: "中英文本翻译", text: "你是一个精通中英互译的信达雅翻译官。请把以下文本翻译为流畅自然的英文，并提供几个不同的口吻（商务/日常/学术）：\n\n[在这里粘贴中文]" }
 ];
 
-window.addEventListener('DOMContentLoaded', () => {
-  const promptList = document.getElementById('prompt-list');
-  if (promptList) {
-    PROMPTS.forEach(p => {
-      const li = document.createElement('li');
-      li.className = 'prompt-item';
-      li.innerHTML = `
-        <div class="prompt-title">${p.title}</div>
-        <div class="prompt-desc">${p.text.substring(0, 100)}...</div>
-      `;
-      li.addEventListener('click', () => {
-        // Build the Kimi URL. Kimi supports ?q= in search to initiate a chat
-        // (URL encode the text so safe to pass in URL)
-        const targetUrl = `https://kimi.moonshot.cn/?q=${encodeURIComponent(p.text)}`;
-        console.log("Opening URL in external browser:", targetUrl);
-        
-        // Use Tauri's open plugin to safely open in system default browser 
-        openUrl(targetUrl).catch(err => {
-            console.error("Failed to open URL:", err);
-            // Fallback
-            window.open(targetUrl, '_blank');
-        });
+console.log("prompts.ts script loaded!");
+
+const promptList = document.getElementById('prompt-list');
+console.log("Found prompt-list element:", promptList);
+
+if (promptList) {
+  PROMPTS.forEach(p => {
+    console.log("Adding prompt:", p.title);
+    const li = document.createElement('li');
+    li.className = 'prompt-item';
+    li.innerHTML = `
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.text.substring(0, 100)}...</div>
+    `;
+    li.addEventListener('click', () => {
+      // Build the Kimi URL. Kimi supports ?q= in search to initiate a chat
+      // (URL encode the text so safe to pass in URL)
+      const targetUrl = `https://kimi.moonshot.cn/?q=${encodeURIComponent(p.text)}`;
+      // const targetUrl = `http://localhost:1420/`;
+      console.log(">>> CLICKED prompt:", p.title);
+      console.log(">>> Opening URL in external browser:", targetUrl);
+      
+      // Use Tauri's open plugin to safely open in system default browser 
+      openUrl(targetUrl).catch(err => {
+          console.error("Failed to open URL via openUrl:", err);
+          // Fallback
+          window.open(targetUrl, '_blank');
       });
-      promptList.appendChild(li);
     });
-  }
-});
+    promptList.appendChild(li);
+  });
+} else {
+  console.error("Could not find #prompt-list in the DOM!");
+}

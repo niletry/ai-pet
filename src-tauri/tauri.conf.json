@@ -31,7 +31,8 @@
           "identifier": "main-capability",
           "description": "Capability for the main window",
           "windows": [
-            "main"
+            "main",
+            "ai-prompts-*"
           ],
           "permissions": [
             "core:window:allow-start-dragging",
@@ -40,7 +41,15 @@
             "core:window:allow-set-title",
             "core:window:allow-show",
             "core:webview:allow-create-webview-window",
-            "opener:allow-open-url"
+            "opener:default",
+            {
+              "identifier": "opener:allow-open-url",
+              "allow": [
+                { "url": "*" },
+                { "url": "**" },
+                { "url": "https://kimi.moonshot.cn/**" }
+              ]
+            }
           ]
         }
       ]
