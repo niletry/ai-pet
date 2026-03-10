@@ -1,69 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI 提示词库</title>
   <style>
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+    }
     body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background-color: #f9f9f9;
+      padding: 15px;
+      user-select: none;
+    }
+    .header {
       display: flex;
-      flex-direction: column;
-      height: 100vh;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
-
-    .prompt-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      margin: 0;
+    h2 { margin: 0; font-size: 1.2rem; }
+    
+    /* 列表样式 */
+    #prompt-list {
       list-style: none;
+      padding: 0;
+      margin: 0;
     }
-
-    .prompt-list::-webkit-scrollbar { width: 6px; }
-    .prompt-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
-
     .prompt-item {
-      padding: 12px 15px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      background: white;
+      background: var(--card);
+      padding: 12px;
+      margin-bottom: 10px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      border: 1px solid #f0f0f0;
-      transition: background 0.1s, transform 0.1s;
+      cursor: pointer;
+      transition: transform 0.1s, border-color 0.2s;
+      border: 1px solid transparent;
+      position: relative;
+    }
+    .prompt-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .prompt-title { font-weight: bold; font-size: 0.95rem; margin-bottom: 4px; }
+    .prompt-desc { font-size: 0.8rem; color: #64748b; line-height: 1.4; }
+    .category-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      margin-top: 5px;
     }
 
-    .prompt-item:hover { 
-      background-color: #f0f8ff; 
-      transform: translateY(-1px);
-    }
-    
-    .prompt-title {
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 6px;
-      font-size: 15px;
-    }
-
-    .prompt-desc {
-      color: #666;
-      font-size: 13px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      line-height: 1.4;
+    /* 状态反馈 */
+    #status-msg {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: none;
+      z-index: 100;
     }
   </style>
 </head>
 <body>
-  <ul class="prompt-list" id="prompt-list">
-    <!-- Injected by JS -->
+  <div class="header">
+    <h2>Prompt 词库</h2>
+  </div>
+
+  <!-- 列表显示 -->
+  <ul id="prompt-list">
+    <li style="text-align: center; color: #94a3b8; padding: 20px;">正在加载词库...</li>
   </ul>
 
-  <script type="module" src="/src/prompts.ts"></script>
+  <div id="status-msg"></div>
+
+  <script type="module" src="./src/prompts.ts"></script>
 </body>
 </html>
