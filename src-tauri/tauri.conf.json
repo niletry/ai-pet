@@ -14,8 +14,8 @@
     "windows": [
       {
         "title": "desktop-pet",
-        "width": 200,
-        "height": 200,
+        "width": 400,
+        "height": 400,
         "resizable": false,
         "fullscreen": false,
         "transparent": true,

@@ -2,7 +2,12 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { characters, CharacterConfig } from './characters';
 
 // Select which character to use here ('owl' or 'water')
-const currentCharacterId = 'water'; 
+let currentCharacterId = 'water'; 
+
+function switchCharacter() {
+  currentCharacterId = currentCharacterId === 'owl' ? 'water' : 'owl';
+  startLifeCycle();
+}
 
 console.log('🐾 Desktop Pet initialized');
 
@@ -145,6 +150,51 @@ window.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation(); // Prevent bubbling
       e.preventDefault(); // Prevent accidental maximize behavior
       await showRoast();
+    });
+
+    // 3. Setup Radial Menu (Right Click)
+    const radialMenu = document.getElementById('radial-menu');
+    petContainer.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      radialMenu?.classList.toggle('active');
+    });
+
+    // Close menu when clicking elsewhere on the pet container
+    petContainer.addEventListener('click', (e) => {
+      // @ts-ignore
+      if (radialMenu?.classList.contains('active') && !e.target.closest('.menu-item')) {
+        radialMenu.classList.remove('active');
+      }
+    });
+
+    // Setup Menu Actions
+    document.getElementById('menu-close')?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        const appWindow = getCurrentWindow();
+        await appWindow.close();
+      } catch (error) {
+        console.error('Failed to close window:', error);
+      }
+    });
+
+    document.getElementById('menu-talk')?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      radialMenu?.classList.remove('active');
+      await showRoast();
+    });
+
+    document.getElementById('menu-switch')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      radialMenu?.classList.remove('active');
+      switchCharacter();
+    });
+
+    document.getElementById('menu-settings')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Placeholder for now
+      radialMenu?.classList.remove('active');
+      console.log('Settings clicked!');
     });
   }
 
