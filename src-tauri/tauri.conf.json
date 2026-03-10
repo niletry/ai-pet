@@ -32,7 +32,8 @@
           "description": "Capability for the main window",
           "windows": [
             "main",
-            "ai-prompts"
+            "ai-prompts",
+            "ai-settings"
           ],
           "permissions": [
             "core:window:allow-start-dragging",
@@ -50,6 +51,8 @@
             "core:window:allow-cursor-position",
             "core:window:allow-get-all-windows",
             "core:webview:allow-create-webview-window",
+            "core:event:allow-listen",
+            "core:event:allow-emit",
             "opener:default",
             {
               "identifier": "opener:allow-open-url",

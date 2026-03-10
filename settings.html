@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 宠物设置 - 聊天服务</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      user-select: none;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 24px;
+    }
+    h1 { margin: 0; font-size: 1.5rem; color: var(--primary); }
+    p { color: #64748b; font-size: 0.9rem; margin-top: 8px; line-height: 1.5; }
+
+    .service-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .service-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s;
+    }
+    .service-card:hover {
+      border-color: #cbd5e1;
+    }
+    .service-card.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .service-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+    .service-info {
+      flex: 1;
+    }
+    .service-name {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .service-url {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .custom-section {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f1f5f9;
+      border-radius: 12px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+      padding-bottom: 20px;
+    }
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-secondary { background: #e2e8f0; color: #475569; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn:hover { opacity: 0.9; }
+
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      color: var(--primary);
+      display: none;
+    }
+    .service-card.selected .check-icon {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>聊天服务集成</h1>
+      <p>选择点击提示词后自动跳转的 AI 聊天网站。</p>
+    </header>
+
+    <div id="service-list" class="service-list">
+      <!-- Services will be rendered here -->
+    </div>
+
+    <div class="custom-section">
+      <div class="form-group">
+        <label>手动填写跳转地址 (自定义)</label>
+        <input type="text" id="custom-url" placeholder="https://example.ai/chat">
+        <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">输入完整网址后回车即可保存</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/settings.ts"></script>
+</body>
+</html>

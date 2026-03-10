@@ -294,11 +294,58 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    document.getElementById('menu-settings')?.addEventListener('click', (e) => {
+    document.getElementById('menu-settings')?.addEventListener('click', async (e) => {
       e.stopPropagation();
-      // Placeholder for now
       radialMenu?.classList.remove('active');
-      console.log('Settings clicked!');
+      
+      try {
+        const settingsWidth = 450;
+        const settingsHeight = 600;
+        const gap = 15;
+        
+        const appWindow = getCurrentWindow();
+        const petPos = await appWindow.outerPosition();
+        const petSize = await appWindow.outerSize();
+        const scaleFactor = await appWindow.scaleFactor();
+        
+        const petX = petPos.x / scaleFactor;
+        const petW = petSize.width / scaleFactor;
+        
+        // Calculate position (similar to prompts but preferred on the opposite side if space allows)
+        let windowX: number;
+        if (petX >= settingsWidth + gap) {
+          windowX = petX - settingsWidth - gap;
+        } else {
+          windowX = petX + petW + gap;
+        }
+        
+        const windowY = Math.max(0, petPos.y / scaleFactor);
+
+        const SETTINGS_LABEL = 'ai-settings';
+        const existingWindows = await getAllWindows();
+        const existing = existingWindows.find(w => w.label === SETTINGS_LABEL);
+        
+        if (existing) {
+          const { LogicalPosition } = await import('@tauri-apps/api/dpi');
+          await existing.setPosition(new LogicalPosition(windowX, windowY));
+          await existing.setFocus();
+          return;
+        }
+        
+        const settingsWindow = new WebviewWindow(SETTINGS_LABEL, {
+          url: 'settings.html',
+          title: 'AI 宠物集成设置',
+          width: settingsWidth,
+          height: settingsHeight,
+          x: windowX,
+          y: windowY,
+          decorations: true,
+        });
+
+        settingsWindow.once('tauri://error', (err) => console.error("Settings Window Error:", err));
+      } catch (err) {
+        console.error("Exception opening Settings Window:", err);
+      }
     });
   }
 

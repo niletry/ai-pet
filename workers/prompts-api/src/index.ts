@@ -24,6 +24,20 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
+    const SERVICES = [
+      { id: 'kimi', name: 'Kimi (Moonshot)', url: 'https://kimi.moonshot.cn/', icon: 'https://www.moonshot.cn/favicon.ico' },
+      { id: 'deepseek', name: 'DeepSeek', url: 'https://chat.deepseek.com/', icon: 'https://static.deepseek.com/favicon.png' },
+      { id: 'chatgpt', name: 'ChatGPT', url: 'https://chatgpt.com/', icon: 'https://openai.com/favicon.ico' },
+      { id: 'tongyi', name: '通义千问', url: 'https://chat.qwen.ai/', icon: 'https://img.alicdn.com/tfs/TB1.6_vSpXXXXXlXFXXXXXXXXXX-64-64.png' },
+      { id: 'claude', name: 'Claude', url: 'https://claude.ai/', icon: 'https://claude.ai/favicon.ico' },
+      { id: 'gemini', name: 'Gemini', url: 'https://gemini.google.com/', icon: 'https://www.gstatic.com/lamda/images/favicon_v1_150160d1.svg' }
+    ];
+
+    // --- GET /api/services: List all supported AI services ---
+    if (url.pathname === '/api/services' && request.method === 'GET') {
+      return new Response(JSON.stringify({ success: true, data: SERVICES }), { headers: corsHeaders });
+    }
+
     // --- Serve Admin Dashboard (Management UI) ---
     if ((url.pathname === '/' || url.pathname === '/admin') && request.method === 'GET') {
       return new Response(getAdminHTML(), {

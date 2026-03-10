@@ -8,7 +8,13 @@ interface Prompt {
 }
 
 const WORKER_URL = 'https://ai-pet-prompts-api.code123.in/api/prompts';
-const KIMI_URL = 'https://kimi.moonshot.cn/';
+const DEFAULT_CHAT_URL = 'https://kimi.moonshot.cn/';
+
+function getChatUrl(): string {
+  const url = localStorage.getItem('ai-pet-chat-url') || DEFAULT_CHAT_URL;
+  console.log('Selected Chat URL:', url);
+  return url;
+}
 
 const promptList = document.getElementById('prompt-list');
 const statusMsg = document.getElementById('status-msg');
@@ -52,14 +58,17 @@ function renderList(prompts: Prompt[]) {
     `;
     
     // 点击复制并打开
-    li.addEventListener('click', async () => {
+      li.addEventListener('click', async () => {
       try {
+        const chatUrl = getChatUrl();
         await navigator.clipboard.writeText(p.text);
-        showStatus('✅ 已复制提示词，正在跳转 Kimi...');
-        await openUrl(KIMI_URL);
+        showStatus('✅ 已复制提示词，正在跳转 AI 助手...');
+        console.log('Opening URL:', chatUrl);
+        await openUrl(chatUrl);
       } catch (err) {
         console.error("Action error:", err);
-        window.open(KIMI_URL, '_blank');
+        const chatUrl = getChatUrl();
+        window.open(chatUrl, '_blank');
       }
     });
 
