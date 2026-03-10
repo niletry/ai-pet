@@ -1,0 +1,76 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 背景：深色层，带超细颗粒感的深靛蓝 -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- 玻璃主体的厚度层 -->
+    <linearGradient id="glass-depth" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:white;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:white;stop-opacity:0" />
+    </linearGradient>
+
+    <!-- 底部蓝光：模拟光从底部透出的效果 -->
+    <radialGradient id="bottom-glow" cx="50%" cy="80%" r="50%">
+      <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#38bdf8;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- 核心 AI 发光体 -->
+    <filter id="ai-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="30" result="blur" />
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.22  0 0 0 0 0.74  0 0 0 0 0.97  0 0 0 1 0" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- 高级圆角内阴影，增加深度感 -->
+    <filter id="inner-shadow">
+      <feOffset dx="0" dy="10" />
+      <feGaussianBlur stdDeviation="15" result="offset-blur" />
+      <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
+      <feFlood flood-color="black" flood-opacity="0.5" result="color" />
+      <feComposite operator="in" in="color" in2="inverse" result="shadow" />
+      <feComponentTransfer in="shadow" result="shadow">
+        <feFuncA type="linear" slope="0.8" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="shadow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 1. 圆角裁切底层 (透明背景) -->
+  <rect width="1024" height="1024" rx="200" fill="url(#bg)" filter="url(#inner-shadow)" />
+
+  <!-- 2. 环境底光 -->
+  <rect width="1024" height="1024" rx="200" fill="url(#bottom-glow)" />
+
+  <!-- 3. “智盒” 玻璃正面 -->
+  <rect x="212" y="212" width="600" height="600" rx="140" fill="url(#glass-depth)" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+  
+  <!-- 4. 为玻璃盒增加镜面边缘 -->
+  <rect x="215" y="215" width="594" height="5" rx="2" fill="white" opacity="0.3" />
+  <rect x="215" y="805" width="594" height="2" rx="1" fill="#38bdf8" opacity="0.4" />
+
+  <!-- 5. 悬浮的 AI 意识核心 -->
+  <g filter="url(#ai-glow)">
+    <!-- 极简发光眼 -->
+    <rect x="420" y="440" width="45" height="90" rx="22.5" fill="#7dd3fc" />
+    <rect x="559" y="440" width="45" height="90" rx="22.5" fill="#7dd3fc" />
+    
+    <!-- 发光的笑容 -->
+    <path d="M430 620 Q512 700 594 620" fill="none" stroke="#7dd3fc" stroke-width="24" stroke-linecap="round" />
+  </g>
+
+  <!-- 6. 顶部反光条 (弧形玻璃质感) -->
+  <path d="M260 260 Q512 210 764 260" fill="none" stroke="white" stroke-width="40" stroke-linecap="round" opacity="0.2" />
+  
+  <!-- 7. 智慧灵感点 (微弱闪烁感) -->
+  <circle cx="740" cy="280" r="10" fill="white" filter="url(#ai-glow)" />
+</svg>
