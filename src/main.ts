@@ -1,4 +1,4 @@
-import { getCurrentWindow, currentMonitor } from '@tauri-apps/api/window';
+import { getCurrentWindow, currentMonitor, getAllWindows } from '@tauri-apps/api/window';
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { characters, CharacterConfig } from './characters';
 
@@ -208,11 +208,9 @@ window.addEventListener('DOMContentLoaded', () => {
         // Calculate: is there enough space on the left?
         let windowX: number;
         if (petX >= promptsWidth + gap) {
-          // Left side has enough space
           windowX = petX - promptsWidth - gap;
           console.log("Placing prompts window on the LEFT of pet");
         } else {
-          // Not enough space on left, place on the right
           windowX = petX + petW + gap;
           console.log("Placing prompts window on the RIGHT of pet");
         }
@@ -220,11 +218,23 @@ window.addEventListener('DOMContentLoaded', () => {
         // Vertically: align top of prompts with the pet, but don't go off-screen
         const windowY = Math.max(0, petPos.y / scaleFactor);
         
-        console.log(`Pet position: (${petX}, ${petPos.y / scaleFactor}), Pet size: ${petW}x${petSize.height / scaleFactor}`);
-        console.log(`Screen width: ${screenWidth / scaleFactor}`);
         console.log(`Prompts window position: (${windowX}, ${windowY})`);
         
-        const promptsWindow = new WebviewWindow(`ai-prompts-${Date.now()}`, {
+        // Check if the prompts window already exists
+        const PROMPTS_LABEL = 'ai-prompts';
+        const existingWindows = await getAllWindows();
+        const existing = existingWindows.find(w => w.label === PROMPTS_LABEL);
+        
+        if (existing) {
+          // Window already open — just focus and reposition it
+          console.log("Prompts window already exists, focusing...");
+          await existing.setPosition(new (await import('@tauri-apps/api/dpi')).LogicalPosition(windowX, windowY));
+          await existing.setFocus();
+          return;
+        }
+        
+        // Create new window
+        const promptsWindow = new WebviewWindow(PROMPTS_LABEL, {
           url: 'prompts.html',
           title: 'AI 提示词库',
           width: promptsWidth,
