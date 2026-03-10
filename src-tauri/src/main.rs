@@ -5,6 +5,7 @@ use tauri::Manager;
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             let _window = app.get_webview_window("main").unwrap();
             // Window is now draggable via data-tauri-drag-region

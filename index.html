@@ -141,12 +141,13 @@
     #radial-menu:not(.active) .menu-item {
       transform: translate(0, 0) scale(0);
     }
+
   </style>
   </head>
 <body>
   <div id="pet-container">
     <div id="radial-menu">
-      <div class="menu-item menu-top" id="menu-switch" title="Switch Character">🔄</div>
+      <div class="menu-item menu-top" id="menu-prompts" title="Prompts">💡</div>
       <div class="menu-item menu-right" id="menu-settings" title="Settings">⚙️</div>
       <div class="menu-item menu-bottom" id="menu-talk" title="Talk">💬</div>
       <div class="menu-item menu-left" id="menu-close" title="Close App">❌</div>
@@ -154,6 +155,9 @@
     <div id="speech-bubble" class="speech-bubble hidden"></div>
     <div id="pet-sprite"></div>
   </div>
+  
+
+
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

@@ -35,7 +35,12 @@
           ],
           "permissions": [
             "core:window:allow-start-dragging",
-            "core:window:allow-close"
+            "core:window:allow-close",
+            "core:window:allow-create",
+            "core:window:allow-set-title",
+            "core:window:allow-show",
+            "core:webview:allow-create-webview-window",
+            "opener:allow-open-url"
           ]
         }
       ]

@@ -1,13 +1,9 @@
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { characters, CharacterConfig } from './characters';
 
-// Select which character to use here ('owl' or 'water')
-let currentCharacterId = 'water'; 
-
-function switchCharacter() {
-  currentCharacterId = currentCharacterId === 'owl' ? 'water' : 'owl';
-  startLifeCycle();
-}
+// Keep character to load
+const currentCharacterId = 'water'; 
 
 console.log('🐾 Desktop Pet initialized');
 
@@ -184,10 +180,27 @@ window.addEventListener('DOMContentLoaded', () => {
       await showRoast();
     });
 
-    document.getElementById('menu-switch')?.addEventListener('click', (e) => {
+    document.getElementById('menu-prompts')?.addEventListener('click', (e) => {
       e.stopPropagation();
       radialMenu?.classList.remove('active');
-      switchCharacter();
+      
+      try {
+        console.log("Opening Prompts Window...");
+        const promptsWindow = new WebviewWindow(`ai-prompts-${Date.now()}`, {
+          url: 'prompts.html',
+          title: 'AI 提示词库',
+          width: 400,
+          height: 500,
+          decorations: true,
+          transparent: false,
+        });
+        
+        promptsWindow.once('tauri://error', function (err) {
+          console.error("Failed to create Prompts Window:", err);
+        });
+      } catch (err) {
+        console.error("Exception opening Prompts Window:", err);
+      }
     });
 
     document.getElementById('menu-settings')?.addEventListener('click', (e) => {
@@ -198,6 +211,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Start Animation
+  // 4. Start Animation
   startLifeCycle();
 });
