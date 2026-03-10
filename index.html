@@ -119,17 +119,23 @@
       opacity: 1;
     }
 
-    /* Positions (Radius = ~65px to clear the pet) */
-    #radial-menu.active .menu-top { transform: translate(0, -65px) scale(1); }
-    #radial-menu.active .menu-right { transform: translate(65px, 0) scale(1); }
-    #radial-menu.active .menu-bottom { transform: translate(0, 65px) scale(1); }
-    #radial-menu.active .menu-left { transform: translate(-65px, 0) scale(1); }
+    /* Positions (Radius = ~100px, Semi-circle arched over the pet) 
+       Angles roughly evenly spaced: -165deg, -115deg, -65deg, -15deg (0 is right, -90 is up) */
+    
+    /* Close: Left-most (-160 deg -> x: -94, y: -34) */
+    #radial-menu.active .menu-left { transform: translate(-94px, -34px) scale(1); }
+    /* Switch: Top-left (-110 deg -> x: -34, y: -94) */
+    #radial-menu.active .menu-top { transform: translate(-34px, -94px) scale(1); }
+    /* Talk: Top-right (-70 deg -> x: 34, y: -94) */
+    #radial-menu.active .menu-bottom { transform: translate(34px, -94px) scale(1); }
+    /* Settings: Right-most (-20 deg -> x: 94, y: -34) */
+    #radial-menu.active .menu-right { transform: translate(94px, -34px) scale(1); }
 
     /* Hover scales for each position so they maintain their translation */
-    #radial-menu.active .menu-top:hover { transform: translate(0, -65px) scale(1.1); }
-    #radial-menu.active .menu-right:hover { transform: translate(65px, 0) scale(1.1); }
-    #radial-menu.active .menu-bottom:hover { transform: translate(0, 65px) scale(1.1); }
-    #radial-menu.active .menu-left:hover { transform: translate(-65px, 0) scale(1.1); }
+    #radial-menu.active .menu-left:hover { transform: translate(-94px, -34px) scale(1.1); }
+    #radial-menu.active .menu-top:hover { transform: translate(-34px, -94px) scale(1.1); }
+    #radial-menu.active .menu-bottom:hover { transform: translate(34px, -94px) scale(1.1); }
+    #radial-menu.active .menu-right:hover { transform: translate(94px, -34px) scale(1.1); }
 
     /* When hidden, reset transforms so they shrink back to center */
     #radial-menu:not(.active) .menu-item {
