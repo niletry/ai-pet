@@ -7,7 +7,7 @@ interface Prompt {
   category: string;
 }
 
-const WORKER_URL = 'http://localhost:8787/api/prompts';
+const WORKER_URL = 'https://ai-pet-prompts-api.code123.in/api/prompts';
 const KIMI_URL = 'https://kimi.moonshot.cn/';
 
 const promptList = document.getElementById('prompt-list');
