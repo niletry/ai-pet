@@ -1,4 +1,4 @@
-import { getCurrentWindow } from '@tauri-apps/api/window';
+import { getCurrentWindow, currentMonitor } from '@tauri-apps/api/window';
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { characters, CharacterConfig } from './characters';
 
@@ -180,17 +180,57 @@ window.addEventListener('DOMContentLoaded', () => {
       await showRoast();
     });
 
-    document.getElementById('menu-prompts')?.addEventListener('click', (e) => {
+    document.getElementById('menu-prompts')?.addEventListener('click', async (e) => {
       e.stopPropagation();
       radialMenu?.classList.remove('active');
       
       try {
         console.log("Opening Prompts Window...");
+        
+        const promptsWidth = 400;
+        const promptsHeight = 500;
+        const gap = 10; // px gap between pet and prompts window
+        
+        // Get pet window position and size
+        const appWindow = getCurrentWindow();
+        const petPos = await appWindow.outerPosition();
+        const petSize = await appWindow.outerSize();
+        const scaleFactor = await appWindow.scaleFactor();
+        
+        // Get current monitor work area
+        const monitor = await currentMonitor();
+        const screenWidth = monitor?.size?.width ?? 1920;
+        
+        // Convert physical pixels to logical pixels
+        const petX = petPos.x / scaleFactor;
+        const petW = petSize.width / scaleFactor;
+        
+        // Calculate: is there enough space on the left?
+        let windowX: number;
+        if (petX >= promptsWidth + gap) {
+          // Left side has enough space
+          windowX = petX - promptsWidth - gap;
+          console.log("Placing prompts window on the LEFT of pet");
+        } else {
+          // Not enough space on left, place on the right
+          windowX = petX + petW + gap;
+          console.log("Placing prompts window on the RIGHT of pet");
+        }
+        
+        // Vertically: align top of prompts with the pet, but don't go off-screen
+        const windowY = Math.max(0, petPos.y / scaleFactor);
+        
+        console.log(`Pet position: (${petX}, ${petPos.y / scaleFactor}), Pet size: ${petW}x${petSize.height / scaleFactor}`);
+        console.log(`Screen width: ${screenWidth / scaleFactor}`);
+        console.log(`Prompts window position: (${windowX}, ${windowY})`);
+        
         const promptsWindow = new WebviewWindow(`ai-prompts-${Date.now()}`, {
           url: 'prompts.html',
           title: 'AI 提示词库',
-          width: 400,
-          height: 500,
+          width: promptsWidth,
+          height: promptsHeight,
+          x: windowX,
+          y: windowY,
           decorations: true,
           transparent: false,
         });
